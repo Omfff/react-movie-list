@@ -28,7 +28,7 @@ class HeaderBar extends Component{
         const selectBefore = (
             <Select defaultValue="按标题" style={{ width: 100 }} onChange={this.handleChange}>
                 <Option value="title">按标题</Option>
-                <Option value="summary">按时间</Option>
+                <Option value="summary">按简介</Option>
                 <Option value="actor">按演员</Option>
                 <Option value="time" >按时间</Option>
             </Select>
