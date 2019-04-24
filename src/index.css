@@ -5,10 +5,61 @@ body {
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.wrapper {
+  width: 1000px;
+  margin: 10px auto;
+  font-size: 14px;
+  background-color: #fff;
+  border: 0.5px solid #f1f1f1;
+  padding: 20px;
+  /*box-shadow:black 0px 0px 5px;*/
+}
+.ant-layout {
+  background: rgba(255,255,255,1);
+  color: #fff;
+}
+.pageTitle{
+  font-size: xx-large;
+  text-align:center;
+  color:#000;
+  font-style:normal;
+}
+#score{
+  color:#FC9933;
+}
+.introduction{
+  color: black;
+
+}
+.moviePoster{
+  float:left;
+  margin-right: 15px;
+}
+.ratingGroup{
+
+}
+.Donutrose{
+  float:left;
+}
+.Basic{
+  margin-left: auto;
+  margin-right: auto;
+}
+#foot{
+  margin-top: 20px;
+  color: gray;
+}
+#footer{
+  color: gray;
+}
+.summary{
+  word-wrap: break-word;
+  word-break: break-all;
 }
