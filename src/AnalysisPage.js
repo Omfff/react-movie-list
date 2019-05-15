@@ -22,7 +22,7 @@ class AnalysisPage extends Component {
         super();
         console.info("constructor")
         this.state = {
-            dataList: [],
+            dataList: {},
         }
     }
 
@@ -56,8 +56,41 @@ class AnalysisPage extends Component {
     }
 
     componentWillMount() {
-        console.info("componentWillMount")
-        this.getData()
+        console.info("analysis page componentWillMount")
+        let request = new Request('http://localhost:8080/movies/analysis', {
+                method: 'GET',
+            }
+        )
+        fetch(request)//'./films.json')
+            .then(response => response.json())
+            .then(data =>this.setState({dataList:this.handleJson(data)}))
+    }
+    handleJson(json){
+        let countryDatas=[];
+        let typeDatas=[];
+        let yearDatas=[];
+        let countryItem = json.countries
+        let yearItem = json.years
+        let typeItem = json.types
+        for (var key in countryItem){
+            let item = {}
+            item["country"] = key
+            item["num"] = countryItem[key]
+            countryDatas.push(item)
+        }
+        for(var key in yearItem){
+            var item = {}
+            item["year"] = key
+            item["population"] = yearItem[key]
+            yearDatas.push(item)
+        }
+        for (var key in typeItem){
+            var item = {}
+            item["type"] = key
+            item["num"] = typeItem[key]
+            typeDatas.push(item)
+        }
+        return {country:countryDatas.sort(this.sortByField),year:yearDatas,type:typeDatas}
     }
     sortByField(x, y) {
         return x.num - y.num
@@ -140,22 +173,33 @@ class AnalysisPage extends Component {
         }
         return {country:countryDatas.sort(this.sortByField),year:yearDatas,type:typeDatas}
     }
-
+    isEmptyJson(obj) {
+        if (JSON.stringify(obj) == '{}') {
+            return true;
+        } else {
+            return false;
+        }
+    }
     render() {
-        const data = this.analyseData()
-        const country = data.country
-        const year = data.year
-        const type = data.type
-        return(
-            <div>
-                <Divider><h1 align="center">国家分布</h1></Divider>
-                <Basic class="Basic" data={country}/>
-                <Divider><h1 align="center">年份分布</h1></Divider>
-                <Donutrose class="Donutrose" data={year}/>
-                <Divider><h1 align="center">类型分布</h1></Divider>
-                <Basiccolumn data={type}/>
-            </div>
-        )
+        if (!this.isEmptyJson(this.state.dataList)) {
+            console.log(this.state.dataList)
+            const data = this.state.dataList//this.analyseData()
+            const country = data.country
+            const year = data.year
+            const type = data.type
+            return (
+                <div>
+                    <Divider><h1 align="center">国家分布</h1></Divider>
+                    <Basic class="Basic" data={country}/>
+                    <Divider><h1 align="center">年份分布</h1></Divider>
+                    <Donutrose class="Donutrose" data={year}/>
+                    <Divider><h1 align="center">类型分布</h1></Divider>
+                    <Basiccolumn data={type}/>
+                </div>
+            )
+        }else{
+            return (<div></div>)
+        }
     }
 }
 
@@ -179,7 +223,7 @@ class Basic extends React.Component {
         });
         return (
             <div class="Basic">
-                <Chart height={400}    data={dv} forceFit>
+                <Chart height={800}    data={dv} forceFit>
                     <Coord transpose />
                     <Axis
                         name="country"

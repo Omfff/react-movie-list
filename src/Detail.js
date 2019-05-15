@@ -20,10 +20,10 @@ class Detail extends  Component{
                 </div>
                 <div class="introduction">
                     <br/>
-                    <p><span>发行时间: </span> <span>{movie.pudate}</span></p>
+                    <p><span>发行时间: </span> <span>{movie.pubdate[0]}</span></p>
                     <p>国家：{movie.countries}</p>
                     <p>类型：{movie.genres.join(" / ")}</p>
-                    <p>导演：{movie.directors.join(" / ")}</p>
+                    <p>导演：{movie.directors.map((item, i) => {  return <span> {item.name} / </span>})}</p>
                     <p>主演：{movie.casts.map((item, i) => {  return <span> {item.name} / </span>})}</p>
                 </div>
                 <div class="ratingGroup">
