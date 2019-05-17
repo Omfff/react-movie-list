@@ -2,6 +2,9 @@ import { Menu, Icon } from 'antd'
 import { Component } from 'react'
 import React from  'react'
 import { Link } from 'react-router-dom'
+import {backToHomePage, changePage, fetchData} from './redux'
+import {connect} from "react-redux";
+import MovieList from "./MovieList";
 
 class NavigationBar extends Component{
     state = {
@@ -12,6 +15,15 @@ class NavigationBar extends Component{
         this.setState({
             current: e.key,
         });
+        if(e.key =="home"){
+            this.props.backToHomePage()
+            let request = new Request('http://localhost:8080/movies/page/'+'1', {
+                    method: 'GET',
+                }
+            )
+            this.props.fetchData(request)
+        }
+
     }
 
     render() {
@@ -21,7 +33,7 @@ class NavigationBar extends Component{
                 selectedKeys={[this.state.current]}
                 mode="horizontal"
             >
-                <Menu.Item key="home">
+                <Menu.Item key="home" >
                     <Link to='/'><Icon type="mail" />HomePage</Link>
                 </Menu.Item>
                 <Menu.Item key="analysis" >
@@ -31,4 +43,9 @@ class NavigationBar extends Component{
         );
     }
 }
+const mapStateToProps=(state)=>{
+    return state
+}
+const mapDispatchToProps = {fetchData,backToHomePage}
+NavigationBar = connect(mapStateToProps,mapDispatchToProps)(NavigationBar)
 export default NavigationBar

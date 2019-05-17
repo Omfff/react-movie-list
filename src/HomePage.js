@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import {Layout} from "antd";
 import HeaderBar from "./HeaderBar";
 import MovieList from "./MovieList";
-
+import {connect} from 'react-redux'
+import {loadMoreWorkAsync,addSearchWord} from "./redux.js"
+import {fetchData} from "./redux";
 class HomePage extends Component{
     constructor() { //构造函数
         super();
@@ -10,35 +12,12 @@ class HomePage extends Component{
         this.state = {
             onSearch:false,
             searchKeyword:'',
-            totalPage:0,
-            basicPath:'http://localhost:8080/movies/page/'
+            total:0
         }
-
     }
-    handleData(strData){
-        const str = strData.replace(/[\b\f\r\t]/g, '')
-        const strList = str.split('\n')
-        var dataList = []
-        console.info(strList.length)
-        for(var j = 0,len=strList.length-1; j < len; j++) {
-            console.log(strList[j])
-            //console.log(strList[j].replace(/[\\]/g, ''))
-            var temp = ''
-            temp = strList[j].replace(/[\\]/g, '')
-            console.log(temp)
-            try {
-                const data = JSON.parse(temp)
-                //console.info(j)
-                dataList.push(data)
-            } catch (e) {
-                console.info(j)
-            }
-        }
-        return dataList
-    }
-
     componentWillMount(){
         console.info("index componentWillMount")
+        //store.subscribe(() => this._updateThemeColor())
     }
     componentDidMount() {
         console.info("index componentDidMount")
@@ -96,7 +75,13 @@ class HomePage extends Component{
                 break
         }
         let basicPath = 'http://localhost:8080/movies/search/keyword/'+keyword+'/type/'+type+'/page/'
-        this.setState({onSearch:true,searchKeyword:keyword,basicPath:basicPath})
+        this.props.addSearchWord(basicPath)
+        let request = new Request(basicPath+'1', {
+                method: 'GET',
+            }
+        )
+        this.props.fetchData(request)
+        this.setState({onSearch:true,searchKeyword:keyword})
 
     }
     render() {
@@ -104,9 +89,20 @@ class HomePage extends Component{
         return (
             <Layout color={"#fff"}>
                 <HeaderBar onSubmit={this.handleSubmitSearch.bind(this)}/>
-                <MovieList  path={this.state.basicPath} />
+                <MovieList/>
             </Layout>
         )
     }
 }
+//会订阅 Store，每当state更新的时候，就会自动执行，重新计算 UI 组件的参数，从而触发 UI 组件的重新渲染
+const mapStateToProps=(state)=>{
+    return state
+}
+//键值应该是一个函数，会被当作 Action creator ，返回的 Action 会由 Redux 自动发出
+
+//是connect函数的第二个参数，用来建立 UI 组件的参数到store.dispatch方法的映射。也就是说，它定义了哪些用户的操作应该当作 Action，传给 Store
+const mapDispatchToProps = {addSearchWord,fetchData}
+//建立一个从（外部的）state对象到（UI 组件的）props对象的映射关系
+//生成一个容器组件，前面的只是UI组件
+HomePage = connect(mapStateToProps,mapDispatchToProps)(HomePage)
 export default HomePage

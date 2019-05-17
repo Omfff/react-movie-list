@@ -2,88 +2,61 @@ import React, { Component } from 'react'
 import { List, Avatar ,Rate,Divider,Pagination} from 'antd'
 import "antd/dist/antd.css"
 import { Link } from 'react-router-dom'
+import {changePage,fetchData} from "./redux.js"
+import {connect} from "react-redux";
 class MovieList extends Component {
     static defaultProps = {
         dataList: []
     }
     constructor(props) { //构造函数
         console.log("movie list constructor")
-        super(props);
+        super(props)
+        console.log(this.props.path)
         this.state = {
-            itemList: {},
-            basicPath :this.props.path,
-            totalPage:0
+            basicPath :this.props.basicPath
         }
         this.onPageChange = this.onPageChange.bind(this)
     }
     componentWillMount() {
         console.log("movie list componentWillMount")
-        let request = new Request(this.state.basicPath+'1', {
+        console.log(typeof this.props.basicPath)
+        let url = this.props.basicPath +this.props.pageNum
+        console.log(url)
+        let request = new Request(url, {
                 method: 'GET',
             }
         )
-        this.fetchData(request)
+        this.props.fetchData(request)
     }
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        console.log("state total page",this.state.totalPage,"nextstate:",nextState.totalPage)
         return true
     }
 
-    componentWillReceiveProps (nextProps){
-        console.log("movie list componentWillReceiveProps")
-        //this.setState({itemList:nextProps.dataList})
-        let request = new Request(nextProps.path+'1', {
-                method: 'GET',
-            }
-        )
-        this.fetchData(request)
-    }
     onPageChange(pageNumber) {
         console.info("getData")
-        let request = new Request(this.state.basicPath+pageNumber, {
+        let request = new Request(this.props.basicPath+pageNumber, {
                 method: 'GET',
             }
         )
-        this.fetchData(request)
-    }
-    fetchData(request){
-        console.log(request)
-        fetch(request)//'./films.json')
-            .then(response => response.json())
-            .then(data =>this.setState({itemList:this.handleJson(data.list),totalPage:data.total}))
+        this.props.changePage(pageNumber)
+        this.props.fetchData(request)
+
     }
     componentWillUnmount() {
         console.log("movie list componentWillUnmount")
     }
 
-    handleJson(jsonList){
-        for(let item of jsonList){
-            item["rating"] = JSON.parse(item.rating)
-            item["genres"] = JSON.parse(item.genres)
-            item["countries"] = JSON.parse(item.countries)
-            item["casts"] = JSON.parse(item.casts)
-            item["directors"] = JSON.parse(item.directors)
-            item["pubdate"] = JSON.parse(item.pubdate)
-        }
-
-        return jsonList
-    }
 
     render() {
         console.log("movielist render")
-        if(this.state.totalPage!=0) {
+        const pages = this.props.total
+        if(this.props.total!=0) {
             return (
                 <div>
                     <List
                         itemLayout="vertical"
                         size="large"
-                        /*pagination={{
-                            onChange: (page) => {
-                                console.log(page)
-                            },
-                            pageSize:this.props.pagesize,
-                        }}*/
-                        dataSource={this.state.itemList}
+                        dataSource={this.props.itemList}
                         renderItem={item => (
                             <Link to={{pathname: '/detail', state: {movie: item}}}>
                                 <List.Item
@@ -112,7 +85,7 @@ class MovieList extends Component {
                             </Link>
                         )}
                     />
-                    <Pagination showQuickJumper defaultCurrent={1} total={this.state.totalPage}
+                    <Pagination showQuickJumper defaultCurrent={this.props.pageNum} total={pages}
                                 onChange={this.onPageChange}/>
                 </div>
             )
@@ -121,5 +94,11 @@ class MovieList extends Component {
         }
     }
 }
-//
+const mapStateToProps=(state)=>{
+    console.log("movie list mapStateToProps")
+    console.log(state)
+    return state
+}
+const mapDispatchToProps = {changePage,fetchData}
+MovieList = connect(mapStateToProps,mapDispatchToProps)(MovieList)
 export default MovieList
