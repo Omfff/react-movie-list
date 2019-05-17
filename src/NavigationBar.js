@@ -17,7 +17,7 @@ class NavigationBar extends Component{
         });
         if(e.key =="home"){
             this.props.backToHomePage()
-            let request = new Request('http://localhost:8080/movies/page/'+'1', {
+            let request = new Request('http://47.107.167.12:8080/api/movies/page/'+'1', {
                     method: 'GET',
                 }
             )

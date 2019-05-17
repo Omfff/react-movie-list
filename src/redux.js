@@ -3,7 +3,7 @@
 export const backToHomePage=()=>{
     return{
         type:'HOME',
-        basicPath:'http://localhost:8080/movies/page/',
+        basicPath:'http://47.107.167.12:8080/api/movies/page/',
         pageNum:1
     }
 
@@ -60,7 +60,7 @@ export const handleJson=(jsonList)=>{
 }
 export const pathReducer = (state, action) => {
     if (!state) return {
-        basicPath:'http://localhost:8080/movies/page/',
+        basicPath:'http://47.107.167.12:8080/api/movies/page/',
         pageNum:1,
         itemList:{},
         total:0
