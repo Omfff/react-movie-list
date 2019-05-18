@@ -74,7 +74,7 @@ class HomePage extends Component{
                 type = 3
                 break
         }
-        let basicPath = 'http://47.107.167.12:8080/api/movies/search/keyword/'+keyword+'/type/'+type+'/page/'
+        let basicPath = 'https://47.107.167.12:8080/api/movies/search/keyword/'+keyword+'/type/'+type+'/page/'
         this.props.addSearchWord(basicPath)
         let request = new Request(basicPath+'1', {
                 method: 'GET',

@@ -57,7 +57,7 @@ class AnalysisPage extends Component {
 
     componentWillMount() {
         console.info("analysis page componentWillMount")
-        let request = new Request('http://47.107.167.12:8080/api/movies/analysis', {
+        let request = new Request('https://47.107.167.12:8080/api/movies/analysis', {
                 method: 'GET',
             }
         )
