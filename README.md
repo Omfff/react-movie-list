@@ -2,28 +2,39 @@
 
 > 1651822 欧明锋
 >
-> 链接： https://omf2333.github.io/react-movie-list
+> 链接： https://omf2333.github.io/react-movie-list （可能会报不安全）
 
 ## 功能介绍
 
 ### 基础部分
 
-+ 读取films.json文件，解析并动态生成电影列表
++ 读取films.json文件，解析并动态生成电影列表（作业2）
++ 通过调用服务端接口，获得相应的电影数据，并展示在列表中（作业3）
 + 列表分页
 
 ### 附加功能
 
 + 电影详情页面
-
-+ 实现按分类搜索
-
+  + 实现：通过点击列表中的电影条目，就会跳转到到详情页面
++ 按分类搜索
+  + 实现：点击搜索框左侧的下拉菜单，选择搜索关键字的类型，在搜索框输入关键字，然后会调用服务端接口，获得符合条件的电影返回
 + 电影数据分析及可视化：国家，发布时间，类型
-
-## 框架
-
-+ **前端框架**：REACT.JS
-+ **UI控件库**：ANT DESIGN & BIZCHART
-+ **开发环境**：WEBSTORM
+  + 点击最上方的![1558159705649](D:\STUDY\web技术\作业2\movie\movie\assets\1558159705649.png)，会通过调用服务端接口获得数据，展示在电影数据分析的图表中
 
 
+## 技术栈
 
++ **前端**：
+  + 框架：react.js
+  + 状态管理：react-redux
+  + 中间件(处理异步action)：redux-thunk
+  + UI控件库：ant design & bizchart
+  + 开发环境：WEBSTORM
+
++ **后端**：
+
+  + 框架：spring-boot
+  + 数据库：Mysql
+  + 连接和操作数据库：Mybatis
+  + 部署：tomcat + 阿里云windows服务器
+  + 开发环境：IntelliJ
